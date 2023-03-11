@@ -9,7 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<WeatherContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<WeatherServices, WeatherServices>();
+builder.Services.AddMvc();
+builder.Services.AddScoped<IWeatherServices, WeatherServices>();
 
 //For Ubuntu
 /*builder.Services.Configure<ForwardedHeadersOptions>(options =>

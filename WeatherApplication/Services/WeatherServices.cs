@@ -12,12 +12,10 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace WeatherApplication.Services
 {
-    public class WeatherServices
+    public class WeatherServices : IWeatherServices
     {
         private readonly WeatherContext _db;
         private readonly ILogger<WeatherController> _logger;
-
-        public WeatherServices() { }
 
         public WeatherServices(WeatherContext db, ILogger<WeatherController> logger)
         {
