@@ -42,7 +42,7 @@
     </head>
     <body>
         <div class="container p-3">
-            <div id ="title"class="row pt-4">
+        <div id="top_banner" class="row pt-4">
                 <div class="row col-12">  
                     <div class="col-4 col-md-4 col-lg-4">
                         <img src="/images/sun.png" alt="Cloud" width="100" height="100" style="float: left;">
@@ -51,28 +51,14 @@
                         <h1 id="city_temp"/>
                     </div>
                         <div class="col-4 col-md-4 col-lg-4">
-                            @if (Model.VariableList is not null && Model.CityList is not null)
-                            {
-                                var variableList = Model.VariableList;
-                                double value = 0;
-
-                                @foreach (var obj in Model.VariableList)
-                                {
-                                    value += double.Parse(@obj.Value);
-                                }
-
-                                var avgValue = Math.Ceiling(value / Convert.ToDouble(Model.VariableList.Count()));
-
-
-                                <h1 id="avg_metric">@avgValue @variableList.FirstOrDefault()?.Unit</h1>
-                            }
+                            <h1 id="avg_metric">@ViewBag.avgTemp[0] @ViewBag.avgTemp[1] @ViewBag.avgTemp[2]</h1>
                         </div>
 
                 </div>
             </div>
 
         <form name="filter_chart" method="post" asp-controller="Weather" asp-action="Index" onsubmit="return validateForm()">
-            <div class="row pt-4" style="margin-top:2%;" >
+            <div class="row pt-4"  >
                 <div class="col-12 col-md-6 col-lg-6">
                     <span>
                         <label for="city_ddl">City:</label>
@@ -153,23 +139,8 @@
                         <img class="card-img-top" src="/images/avg_temp.jpg" height="300">
                         <div class="card-body" style="margin-top:2%; margin-bottom:3%;">
                             <h5 class="card-title">Average Temperature/Humidity</h5>
-                             @if (Model.VariableList is not null && Model.CityList is not null)
-                             {
-                                var variableList = Model.VariableList;
-                                double value = 0;
-
-                                @foreach (var obj in Model.VariableList)
-                                {
-                                    value += double.Parse(@obj.Value);
-                                }
-
-                                var avgValue = value / Convert.ToDouble(Model.VariableList.Count());
-
-
-                                <p id="metric_val" class="card-text" style="margin:0px;"> @avgValue @variableList.FirstOrDefault()?.Unit</p>
-                                
-                                <p id="city_humidity" class="card-text">Please take care!</p>
-                             }                            
+                            <p id="metric_val" class="card-text" style="margin:0px;"> @ViewBag.avgTemp[0] @ViewBag.avgTemp[1] @ViewBag.avgTemp[2]</p>                               
+                            <p id="city_humidity" class="card-text">Please take care!</p>            
                         </div>
                     </div>
                 </div>      

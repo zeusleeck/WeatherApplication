@@ -28,10 +28,11 @@ namespace WeatherApplication.Controllers
             WeatherList objWeatherList = _weatherServices.getWeatherbyCity(_weatherServices.getFirstCityId(), _weatherServices.getFirstUnit());
             var cities = _weatherServices.getCitySelectListItem(objWeatherList, firstCityId.ToString());
             var metrics = _weatherServices.getMetricSelectListItem(firstUnit);
+            var avgTemp = _weatherServices.getAvgMetric(objWeatherList);
 
             ViewBag.cities = cities;
             ViewBag.metrics = metrics;
-
+            ViewBag.avgTemp = avgTemp;
             return View(objWeatherList);
         }
 
@@ -48,9 +49,11 @@ namespace WeatherApplication.Controllers
 
             var cities = _weatherServices.getCitySelectListItem(objWeatherList, SelectedCity);
             var metrics = _weatherServices.getMetricSelectListItem(Metric);
+            var avgTemp = _weatherServices.getAvgMetric(objWeatherList);
 
             ViewBag.cities = cities;
             ViewBag.metrics = metrics;
+            ViewBag.avgTemp = avgTemp;
             return View(objWeatherList);
         }
 

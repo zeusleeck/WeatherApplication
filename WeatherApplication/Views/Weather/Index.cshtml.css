@@ -1,17 +1,18 @@
-﻿#title {
+﻿#top_banner {
     background-color: #0086b3;
     height: 150px;
     width: 100%;
+    margin-right:-2% !important;
 }
 
 #city_temp {
     text-align: center;
-    margin-top: 5%;
+    margin-top: 7%;
     color: white;
 }
 
 #avg_metric {
     text-align: right;
-    margin-top: 5%;
+    margin-top: 7%;
     color: white;
 }

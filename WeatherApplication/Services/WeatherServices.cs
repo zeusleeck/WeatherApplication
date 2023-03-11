@@ -287,5 +287,37 @@ namespace WeatherApplication.Services
             }
             return distinctMetric;
         }
+
+        public List<string> getAvgMetric(WeatherList objWeatherList)
+        {
+            List<string> avgValueList = new List<string>();
+
+            var avgValue = 0.0;
+            if (objWeatherList.VariableList is not null && objWeatherList.CityList is not null)
+            {
+                double value = 0;
+
+                foreach (var obj in objWeatherList.VariableList)
+                {
+                    value += double.Parse(obj.Value);
+                }
+
+                avgValue = Math.Ceiling(value / Convert.ToDouble(objWeatherList.VariableList.Count()));
+                avgValueList.Add(objWeatherList.VariableList.FirstOrDefault()?.Name);
+                avgValueList.Add(avgValue.ToString());
+                avgValueList.Add(objWeatherList.VariableList.FirstOrDefault()?.Unit);
+
+            }
+
+            else
+            {
+                avgValueList.Add("No");
+                avgValueList.Add("Data");
+                avgValueList.Add("Avaliable");
+            }
+
+            return avgValueList;
+        }
+            
     }
 }

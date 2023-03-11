@@ -1,18 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using WeatherApplication;
 using WeatherApplication.Controllers;
+using WeatherApplication.Data;
 using WeatherApplication.Models;
 using WeatherApplication.Services;
 
 namespace WeatherApplication
 {
-
     [TestFixture]
     public class WeatherServiceNUnitTests
     {
@@ -21,7 +25,25 @@ namespace WeatherApplication
         [Test]
         public void getFirstCityId()
         {
-            var result = _weatherServices.getFirstCityId();
+            var data = new List<Variable>
+            {
+                new Variable { Id = 1, Name= "Tempurature", Value="20.0", Timestamp = "2023-01-01 00:00:00.0000000 +00:00", CityId = 1},
+                new Variable { Id = 1, Name= "Tempurature", Value="20.0", Timestamp = "2023-01-01 00:00:00.0000000 +00:00", CityId = 1},
+                new Variable { Id = 1, Name= "Tempurature", Value="20.0", Timestamp = "2023-01-01 00:00:00.0000000 +00:00", CityId = 2},
+            }.AsQueryable();
+
+            var mockSet = new Mock<DbSet<Variable>>();
+            mockSet.As<IQueryable<Variable>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Variable>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Variable>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Variable>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
+
+            var mockContext = new Mock<WeatherContext>();
+            mockContext.Setup(c => c.Variable).Returns(mockSet.Object);
+
+            var service = _weatherServices(mockContext);
+
+            var result = service.getFirstCityId();
             Assert.AreEqual(1,result);
         }
 
