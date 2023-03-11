@@ -29,7 +29,7 @@
                 url: "https://localhost:7115/Weather/getCityHighestHumidity",
                 success: function (data) {
                     $('#city_name_humidity').html("City: " + data.CityName);
-                    $('#city_humidity').html("Avg Humidity: " + data.AverageHumidity + " %");
+                    $('#city_humidity').html("Avg Humidity: " + Math.round(data.AverageHumidity * 100) / 100 + " %") ;
                 },
                 error: function (error) {
 
