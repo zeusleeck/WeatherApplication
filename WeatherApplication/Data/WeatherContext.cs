@@ -13,7 +13,7 @@ namespace WeatherApplication.Data
         {
         }
 
-        public DbSet<City> City { get; set; }
-        public DbSet<Variable> Variable { get; set; }
+        public virtual DbSet<City> City { get; set; }
+        public virtual DbSet<Variable> Variable { get; set; }
     }
 }

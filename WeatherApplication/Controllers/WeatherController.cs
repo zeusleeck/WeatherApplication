@@ -15,9 +15,10 @@ namespace WeatherApplication.Controllers
     {
         private readonly ILogger<WeatherController> _logger;
         private readonly IWeatherServices _weatherServices;
-        public WeatherController(IWeatherServices weatherServices)
+        public WeatherController(IWeatherServices weatherServices, ILogger<WeatherController> logger)
         {
             _weatherServices = weatherServices;
+            _logger = logger;
         } 
 
         public IActionResult Index()

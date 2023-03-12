@@ -8,5 +8,5 @@ public class City
 
     public string CityName { get; set; } = null!;
 
-    public virtual ICollection<Variable> Variable { get; } = new List<Variable>();
+    public virtual ICollection<Variable> Variables { get; } = new List<Variable>();
 }

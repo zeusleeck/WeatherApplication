@@ -1,16 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
 using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using WeatherApplication;
-using WeatherApplication.Controllers;
 using WeatherApplication.Data;
 using WeatherApplication.Models;
 using WeatherApplication.Services;
@@ -20,37 +13,53 @@ namespace WeatherApplication
     [TestFixture]
     public class WeatherServiceNUnitTests
     {
-        private readonly IWeatherServices _weatherServices;
+        private readonly ILogger<WeatherServices> _logger;
+
+        public Mock<WeatherContext> insertDbContext()
+        {
+            var variableData = new List<Variable>()
+            {
+                new Variable { Id = 1, Name= "Tempurature", Unit= "°C", Value="20.0", Timestamp = new DateTime(2023,1,1,00,00,00), CityId = 1, City = {Id = 1, CityName = "Singapore"}},
+                new Variable { Id = 2, Name= "Tempurature", Unit= "°C", Value="17.3", Timestamp = new DateTime(2023,1,2,00,00,00), CityId = 1, City = {Id = 1, CityName = "Singapore" } },
+                new Variable { Id = 92, Name= "Tempurature", Unit="°F", Value="86", Timestamp = new DateTime(2023,1,30,00,00,00), CityId = 2, City = {Id = 2, CityName = "Kuala Lumpur"}}
+            }.AsQueryable();
+
+            var cityData = new List<City>()
+            {
+                new City { Id = 1, CityName = "Singapore"},
+                new City { Id = 1, CityName = "Singapore" } ,
+                new City { Id = 2, CityName = "Kuala Lumpur"}
+            }.AsQueryable();
+
+
+            var mockSetVariable = new Mock<DbSet<Variable>>();
+            mockSetVariable.As<IQueryable<Variable>>().Setup(m => m.Provider).Returns(variableData.Provider);
+            mockSetVariable.As<IQueryable<Variable>>().Setup(m => m.Expression).Returns(variableData.Expression);
+            mockSetVariable.As<IQueryable<Variable>>().Setup(m => m.ElementType).Returns(variableData.ElementType);
+            mockSetVariable.As<IQueryable<Variable>>().Setup(m => m.GetEnumerator()).Returns(() => variableData.GetEnumerator());
+
+            var mockContext = new Mock<WeatherContext>();
+            mockContext.Setup(c => c.Variable).Returns(mockSetVariable.Object);
+          
+            return mockContext;
+        }
 
         [Test]
         public void getFirstCityId()
         {
-            var data = new List<Variable>
-            {
-                new Variable { Id = 1, Name= "Tempurature", Value="20.0", Timestamp = "2023-01-01 00:00:00.0000000 +00:00", CityId = 1},
-                new Variable { Id = 1, Name= "Tempurature", Value="20.0", Timestamp = "2023-01-01 00:00:00.0000000 +00:00", CityId = 1},
-                new Variable { Id = 1, Name= "Tempurature", Value="20.0", Timestamp = "2023-01-01 00:00:00.0000000 +00:00", CityId = 2},
-            }.AsQueryable();
+            var mockContext = insertDbContext();
+            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
 
-            var mockSet = new Mock<DbSet<Variable>>();
-            mockSet.As<IQueryable<Variable>>().Setup(m => m.Provider).Returns(data.Provider);
-            mockSet.As<IQueryable<Variable>>().Setup(m => m.Expression).Returns(data.Expression);
-            mockSet.As<IQueryable<Variable>>().Setup(m => m.ElementType).Returns(data.ElementType);
-            mockSet.As<IQueryable<Variable>>().Setup(m => m.GetEnumerator()).Returns(() => data.GetEnumerator());
-
-            var mockContext = new Mock<WeatherContext>();
-            mockContext.Setup(c => c.Variable).Returns(mockSet.Object);
-
-            var service = _weatherServices(mockContext);
-
-            var result = service.getFirstCityId();
+            var result = weatherServices.getFirstCityId();
             Assert.AreEqual(1,result);
         }
 
         [Test]
         public void getFirstUnit()
         {
-            var result = _weatherServices.getFirstUnit();
+            var mockContext = insertDbContext();
+            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
+            var result = weatherServices.getFirstUnit();
             Assert.AreEqual("Tempurature", result);
         }
 
@@ -58,45 +67,64 @@ namespace WeatherApplication
         [TestCase(1, "Temperature")]
         public void getWeatherbyCity(int city_id, string metric_unit)
         {
-            WeatherList result = _weatherServices.getWeatherbyCity(city_id, metric_unit);
-           
-            //var result = weatherList.getWeatherbyCity(city_id, metric_unit);
-
-            Console.Write("Test");
-            NUnit.Framework.TestContext.WriteLine(result);
-
-            Assert.AreEqual(0, result);
+            var mockContext = insertDbContext();
+            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
+            var result = weatherServices.getWeatherbyCity(city_id, metric_unit);
+            Assert.AreEqual("Tempurature", result);
         }
 
         [Test]
+        [TestCase("Singapore", "°C", "2023-02-14", "2023-02-18")]
         public void getCityWeather(string selectedCity, string Metric, string DateFrom, string DateTo)
         {
-            Assert.AreEqual(0, 0);
+            var mockContext = insertDbContext();
+            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
+            var result = weatherServices.getCityWeather(selectedCity, Metric, DateFrom, DateTo);
+            Assert.AreEqual(null, result);
         }
 
         [Test]
         public void getHottestCity()
         {
-            Assert.AreEqual(0, 0);
+            var mockContext = insertDbContext();
+            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
+            var result = weatherServices.getHottestCity();
+            Assert.AreEqual(new HottestCity { CityName= "Kuala Lumpur", NumberofDays=12 }, result);
         }
 
 
         [Test]
         public void getCityWithHigestHumidity()
         {
-            Assert.AreEqual(0, 0);
+            var mockContext = insertDbContext();
+            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
+            var result = weatherServices.getCityWithHigestHumidity();
+            Assert.AreEqual(new HigestHumidity { CityName = "Singapore", AverageHumidity = 66.06 }, result);
         }
 
         [Test]
+        
         public void getCitySelectListItem(WeatherList objWeatherList, string SelectedCity)
         {
-            Assert.AreEqual(0, 0);
+            var mockContext = insertDbContext();
+            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
+           
+            List<SelectListItem> cities = new();
+
+            cities.Add(new SelectListItem { Value = "1", Text = "Singapore", Selected = true });
+            cities.Add(new SelectListItem { Value = "2", Text = "Kualar Lumpur", });
+            var result = weatherServices.getCitySelectListItem(objWeatherList, SelectedCity);
+            Assert.AreEqual(cities, result);
         }
         
         [Test]
+        [TestCase("°C")]
         public void getMetricSelectListItem(string unit)
         {
-            Assert.AreEqual(0, 0);
+           var mockContext = insertDbContext();
+           IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
+           var result = weatherServices.getMetricSelectListItem(unit);
+           Assert.AreEqual("Tempurature", result);
         }
     }
 }

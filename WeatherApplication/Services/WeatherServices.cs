@@ -15,9 +15,9 @@ namespace WeatherApplication.Services
     public class WeatherServices : IWeatherServices
     {
         private readonly WeatherContext _db;
-        private readonly ILogger<WeatherController> _logger;
+        private readonly ILogger<WeatherServices> _logger;
 
-        public WeatherServices(WeatherContext db, ILogger<WeatherController> logger)
+        public WeatherServices(WeatherContext db, ILogger<WeatherServices> logger)
         {
             _db = db;
             _logger = logger;
