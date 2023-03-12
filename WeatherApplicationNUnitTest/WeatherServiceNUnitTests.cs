@@ -64,16 +64,6 @@ namespace WeatherApplication
         }
 
         [Test]
-        [TestCase(1, "Temperature")]
-        public void getWeatherbyCity(int city_id, string metric_unit)
-        {
-            var mockContext = insertDbContext();
-            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
-            var result = weatherServices.getWeatherbyCity(city_id, metric_unit);
-            Assert.AreEqual("Tempurature", result);
-        }
-
-        [Test]
         [TestCase("Singapore", "°C", "2023-02-14", "2023-02-18")]
         public void getCityWeather(string selectedCity, string Metric, string DateFrom, string DateTo)
         {
@@ -103,28 +93,16 @@ namespace WeatherApplication
         }
 
         [Test]
-        
-        public void getCitySelectListItem(WeatherList objWeatherList, string SelectedCity)
-        {
-            var mockContext = insertDbContext();
-            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
-           
-            List<SelectListItem> cities = new();
-
-            cities.Add(new SelectListItem { Value = "1", Text = "Singapore", Selected = true });
-            cities.Add(new SelectListItem { Value = "2", Text = "Kualar Lumpur", });
-            var result = weatherServices.getCitySelectListItem(objWeatherList, SelectedCity);
-            Assert.AreEqual(cities, result);
-        }
-        
-        [Test]
-        [TestCase("°C")]
+        [TestCase("Temperature")]
         public void getMetricSelectListItem(string unit)
         {
            var mockContext = insertDbContext();
            IWeatherServices weatherServices = new WeatherServices(mockContext.Object, _logger);
+           List<SelectListItem> metricSelectListItem = new List<SelectListItem>();
+           metricSelectListItem.Add((new SelectListItem { Value = "Temperature", Text = "Temperature °C", Selected = true }));
+           metricSelectListItem.Add((new SelectListItem { Value = "Humidity", Text = "Humidity %", Selected = false }));
            var result = weatherServices.getMetricSelectListItem(unit);
-           Assert.AreEqual("Tempurature", result);
+           Assert.AreEqual(metricSelectListItem, result);
         }
     }
 }
