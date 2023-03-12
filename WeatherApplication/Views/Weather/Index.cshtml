@@ -12,9 +12,9 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "https://localhost:7115/Weather/getHottestCity",
+                url: "https://weatherapplicationserver.azurewebsites.net/Weather/getHottestCity",
                 success: function (data) {
-                    $('#city_name').html("City: " + data.CityName);
+                    $('#city_name').html(data.CityName);
                     $('#total_days').html("Days > 30 °C: " + data.NumberofDays + " days");
                 },
                 error: function (error) {
@@ -26,9 +26,9 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "https://localhost:7115/Weather/getCityHighestHumidity",
+                url: "https://weatherapplicationserver.azurewebsites.net/Weather/getCityHighestHumidity",
                 success: function (data) {
-                    $('#city_name_humidity').html("City: " + data.CityName);
+                    $('#city_name_humidity').html(data.CityName);
                     $('#city_humidity').html("Avg Humidity: " + Math.round(data.AverageHumidity * 100) / 100 + " %") ;
                 },
                 error: function (error) {
@@ -51,7 +51,7 @@
                         <h1 id="city_temp"/>
                     </div>
                         <div class="col-4 col-md-4 col-lg-4">
-                            <h1 id="avg_metric">@ViewBag.avgTemp[0] @ViewBag.avgTemp[1] @ViewBag.avgTemp[2]</h1>
+                            <h1 id="avg_metric"> @ViewBag.avgTemp[1] @ViewBag.avgTemp[2]</h1>
                         </div>
 
                 </div>
