@@ -19,9 +19,9 @@ namespace WeatherApplication
         {
             var variableData = new List<Variable>()
             {
-                new Variable { Id = 1, Name= "Tempurature", Unit= "°C", Value="20.0", Timestamp = new DateTime(2023,1,1,00,00,00), CityId = 1, City = {Id = 1, CityName = "Singapore"}},
-                new Variable { Id = 2, Name= "Tempurature", Unit= "°C", Value="17.3", Timestamp = new DateTime(2023,1,2,00,00,00), CityId = 1, City = {Id = 1, CityName = "Singapore" } },
-                new Variable { Id = 92, Name= "Tempurature", Unit="°F", Value="86", Timestamp = new DateTime(2023,1,30,00,00,00), CityId = 2, City = {Id = 2, CityName = "Kuala Lumpur"}}
+                new Variable { Id = 1, Name= "Tempurature", Unit= "°C", Value="20.0", Timestamp = new DateTime(2023,1,1,00,00,00), CityId = 1},
+                new Variable { Id = 2, Name= "Tempurature", Unit= "°C", Value="17.3", Timestamp = new DateTime(2023,1,2,00,00,00), CityId = 1},
+                new Variable { Id = 92, Name= "Tempurature", Unit="°F", Value="86", Timestamp = new DateTime(2023,1,30,00,00,00), CityId = 2}
             }.AsQueryable();
 
             var cityData = new List<City>()
@@ -38,10 +38,18 @@ namespace WeatherApplication
             mockSetVariable.As<IQueryable<Variable>>().Setup(m => m.ElementType).Returns(variableData.ElementType);
             mockSetVariable.As<IQueryable<Variable>>().Setup(m => m.GetEnumerator()).Returns(() => variableData.GetEnumerator());
 
-            var mockContext = new Mock<WeatherContext>();
-            mockContext.Setup(c => c.Variable).Returns(mockSetVariable.Object);
-          
-            return mockContext;
+            var mockVariableContext = new Mock<WeatherContext>();
+            mockVariableContext.Setup(c => c.Variable).Returns(mockSetVariable.Object);
+
+            /*var mockSetCity = new Mock<DbSet<City>>();
+            mockSetCity.As<IQueryable<City>>().Setup(m => m.Provider).Returns(variableData.Provider);
+            mockSetCity.As<IQueryable<City>>().Setup(m => m.Expression).Returns(variableData.Expression);
+            mockSetCity.As<IQueryable<City>>().Setup(m => m.ElementType).Returns(variableData.ElementType);
+            mockSetCity.As<IQueryable<City>>().Setup(m => m.GetEnumerator()).Returns(() => variableData.GetEnumerator());*/
+
+            //var mockCityContext = new Mock<WeatherContext>();
+            //mockCityContext.Setup(c => c.City).Returns(mockSetCity.Object);
+            return mockVariableContext;
         }
 
         [Test]
