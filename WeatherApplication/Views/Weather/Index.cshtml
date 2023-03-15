@@ -12,7 +12,7 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "https://localhost:7115/Weather/getHottestCity",
+                url: "https://weatherapplicationserver.azurewebsites.net/Weather/getHottestCity",
                 success: function (data) {
                     $('#city_name').html(data.CityName);
                     $('#total_days').html("Days > 30 °C: " + data.NumberofDays + " days");
@@ -26,7 +26,7 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "https://localhost:7115/Weather/getCityHighestHumidity",
+                url: "https://weatherapplicationserver.azurewebsites.net/getCityHighestHumidity",
                 success: function (data) {
                     $('#city_name_humidity').html(data.CityName);
                     $('#city_humidity').html("Avg Humidity: " + Math.round(data.AverageHumidity * 100) / 100 + " %") ;
