@@ -1,0 +1,24 @@
+version: "1.0"
+
+services:
+    weatherapplication:
+      build: 
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        ASPNETCORE_HTTP_PORT: "https://+:5001"
+        ASPNETCORE_URLS: "http://+:5000"
+      ports:
+        - "5000:5000"
+        - "5001:5001"
+      depends_on:
+        - db
+      
+    db:
+      image: "mcr.microsoft.com/mssql/server:2022-latest"
+      environment:
+        SA_PASSWORD: "*********"
+        ACCEPT_EULA: "Y"
+        MSSQL_PID: Express
+      ports:
+        - "4022:1433"
