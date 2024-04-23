@@ -3,14 +3,14 @@ Weather Application using ASP .NET Core MVC Framework based on the following Dat
 
 City 
 |Id |	CityName    |
--------------------
+|---|-------------|
 |1	| Singapore   |
 |2	| Kuala Lumpur|
 |3	| Bangalore   |
 |4	| Colombo     |
 
 
-| First Header  | Second Header |
+| Id  | CityName |
 | ------------- | ------------- |
 | Content Cell  | Content Cell  |
 | Content Cell  | Content Cell  |
