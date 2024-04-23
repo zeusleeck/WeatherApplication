@@ -1,12 +1,13 @@
 # WeatherApplication
 Weather Application using ASP .NET Core MVC Framework based on the following Database Table. Please note that the data presented here are sample data without any real world reference.
 
-|City | 
-|Id	CityName|
-|1	Singapore|
-|2	Kuala Lumpur|
-|3	Bangalore|
-|4	Colombo|
+City 
+|Id |	CityName    |
+-------------------
+|1	| Singapore   |
+|2	| Kuala Lumpur|
+|3	| Bangalore   |
+|4	| Colombo     |
 
 
 Variable table
