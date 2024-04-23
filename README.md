@@ -10,6 +10,11 @@ City
 |4	| Colombo     |
 
 
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
+
 Variable table
 Id	Name	Unit	Value	Timestamp	CityId
 1	Temperature	°C	20	2023-01-01 00:00:00.0000000 +00:00	1
